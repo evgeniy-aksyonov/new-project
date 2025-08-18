@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
 import { ProjectStoreService } from '../../services/project-store.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Card } from '../card/card';
 import { CommonModule } from '@angular/common';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-list',
@@ -12,15 +13,20 @@ import { CommonModule } from '@angular/common';
   styleUrl: './project-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectList {
+export class ProjectList implements OnDestroy {
   store = inject(ProjectStoreService);
   searchControl = new FormControl('');
   router = inject(Router);
 
-  constructor() {
-    this.searchControl.valueChanges.subscribe((q) => {
+  private searchSub = this.searchControl.valueChanges
+    .pipe(debounceTime(300), distinctUntilChanged())
+    .subscribe((q) => {
       this.store.search(q ?? '');
     });
+
+  ngOnDestroy() {
+    this.searchSub.unsubscribe();
+    this.store.search('');
   }
 
   filterByStatus(event: Event) {
