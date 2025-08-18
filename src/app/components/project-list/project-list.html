@@ -1,0 +1,26 @@
+<h1>All Projects</h1>
+
+<h2>Filters</h2>
+<div class="filters">
+  <input type="text" [formControl]="searchControl" placeholder="Project search..." />
+
+  <div>
+    <label for="status-filter">Status:</label>
+    <select id="status-filter" (change)="filterByStatus($event)">
+      <option value="">All</option>
+      <option value="active">Active</option>
+      <option value="paused">Paused</option>
+      <option value="done">Done</option>
+    </select>
+  </div>
+</div>
+
+@if (store.getFiltered()().length === 0) {
+<h2>No Projects</h2>
+} @else {
+<div class="project-list">
+  @for (project of store.getFiltered()(); track project.id) {
+  <app-card [project]="project"></app-card>
+  }
+</div>
+}

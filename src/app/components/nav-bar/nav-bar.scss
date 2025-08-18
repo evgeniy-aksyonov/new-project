@@ -1,0 +1,9 @@
+.nav-bar a {
+  font-size: large;
+  margin-right: 1rem;
+
+  & .active {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+}

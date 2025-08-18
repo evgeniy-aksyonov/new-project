@@ -1,0 +1,17 @@
+<h1>Project Details</h1>
+
+@if (!project) {
+<h2>Project not found</h2>
+} @else {
+<strong>
+  <div>{{ project.name }}</div>
+</strong>
+
+<div>Owner{{ project.owner }}</div>
+<div>Deadline{{ project.deadline }}</div>
+<div>Status{{ project.status }}</div>
+
+<button (click)="toggleFavorite(project.id)">
+  {{ isFavorite ? 'Unfavorite' : 'Favorite' }}
+</button>
+}

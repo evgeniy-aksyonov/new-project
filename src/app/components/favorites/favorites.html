@@ -1,0 +1,11 @@
+<h1>Favorites({{ favoritesCount }})</h1>
+
+@if (store.getFavorites()().length === 0) {
+<h2>No Favorites</h2>
+} @else {
+<div class="favorites-list">
+  @for (project of store.getFavorites()(); track project.id) {
+  <app-card [project]="project"></app-card>
+  }
+</div>
+}
