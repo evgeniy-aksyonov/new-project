@@ -32,6 +32,7 @@ export class ProjectStoreService {
       return matchesQuery && matchesStatus;
     });
   });
+  favorites = computed(() => this.projects().filter((p) => this.favoriteIds().has(p.id)));
 
   constructor(private http: HttpClient) {
     this.loadFavorites();
@@ -77,7 +78,7 @@ export class ProjectStoreService {
   }
 
   getFavorites(): Signal<Project[]> {
-    return computed(() => this.projects().filter((p) => this.favoriteIds().has(p.id)));
+    return this.favorites;
   }
 
   getFiltered(): Signal<Project[]> {
