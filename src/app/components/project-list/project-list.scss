@@ -10,3 +10,12 @@
   gap: 1rem;
   flex-wrap: wrap;
 }
+
+.error {
+  color: red;
+  font-weight: bold;
+  padding: 1rem;
+  border: 1px solid red;
+  border-radius: 0.5rem;
+  background-color: #ffe6e6;
+}

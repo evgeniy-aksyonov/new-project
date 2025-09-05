@@ -12,12 +12,14 @@ export interface Project {
   name: string;
   owner: string;
   deadline: string;
-  status: string;
+  status: Status;
 }
 
 @Injectable({ providedIn: 'root' })
 export class ProjectStoreService {
   projects = signal<Project[]>([]);
+  loading = signal<boolean>(false);
+  error = signal<string | null>(null);
   query = signal('');
   statusFilter = signal<Status | ''>('');
   favoriteIds = signal<Set<string>>(new Set());
@@ -43,12 +45,17 @@ export class ProjectStoreService {
   }
 
   private loadProjects() {
+    this.loading.set(true);
+    this.error.set(null);
     this.http.get<Project[]>('assets/projects.json').subscribe({
       next: (data) => {
         this.projects.set(data);
+        this.loading.set(false);
       },
       error: (err) => {
         console.error('Failed to load projects:', err);
+        this.error.set('Failed to load projects. Please try again.');
+        this.loading.set(false);
       },
     });
   }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, Input, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { Project, ProjectStoreService } from '../../services/project-store.service';
 import { Router } from '@angular/router';
 
@@ -10,12 +10,12 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Card {
-  @Input() project!: Project;
+  project = input.required<Project>();
   store = inject(ProjectStoreService);
   router = inject(Router);
 
   get isFavorite() {
-    return this.store.favoriteIds().has(this.project.id);
+    return this.store.favoriteIds().has(this.project().id);
   }
 
   toggleFavorite(id: string) {

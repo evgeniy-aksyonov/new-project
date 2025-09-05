@@ -7,9 +7,9 @@
   <div>{{ project.name }}</div>
 </strong>
 
-<div>Owner{{ project.owner }}</div>
-<div>Deadline{{ project.deadline }}</div>
-<div>Status{{ project.status }}</div>
+<div>Owner: {{ project.owner }}</div>
+<div>Deadline: {{ project.deadline }}</div>
+<div>Status: {{ project.status }}</div>
 
 <button (click)="toggleFavorite(project.id)">
   {{ isFavorite ? 'Unfavorite' : 'Favorite' }}

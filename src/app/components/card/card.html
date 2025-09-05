@@ -1,16 +1,15 @@
 <div class="card">
   <strong>
-    <div>{{ project.name }}</div>
+    <div>{{ project().name }}</div>
   </strong>
-  <div>Owner: {{ project.owner }}</div>
-  <div>Deadline: {{ project.deadline }}</div>
-  <div>Status: {{ project.status }}</div>
-  <div>Owner: {{ project.owner }}</div>
+  <div>Owner: {{ project().owner }}</div>
+  <div>Deadline: {{ project().deadline }}</div>
+  <div>Status: {{ project().status }}</div>
 
   <div class="buttons">
-    <button (click)="toggleFavorite(project.id)">
+    <button (click)="toggleFavorite(project().id)">
       {{ isFavorite ? 'Unfavorite' : 'Favorite' }}
     </button>
-    <button (click)="goToDetails(project.id)">Details</button>
+    <button (click)="goToDetails(project().id)">Details</button>
   </div>
 </div>
