@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ProjectStoreService, Status } from './project-store.service';
 
 describe('ProjectStoreService', () => {
@@ -8,8 +10,12 @@ describe('ProjectStoreService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [ProjectStoreService]
+      providers: [
+        ProjectStoreService,
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideZonelessChangeDetection()
+      ]
     });
     service = TestBed.inject(ProjectStoreService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -20,12 +26,15 @@ describe('ProjectStoreService', () => {
   });
 
   it('should be created', () => {
+    const req = httpMock.expectOne('assets/projects.json');
+    req.flush([]);
+    
     expect(service).toBeTruthy();
   });
 
   it('should load projects from assets', () => {
     const mockProjects = [
-      { id: '1', name: 'Test Project', owner: 'John', deadline: '2025-12-01', status: 'active' }
+      { id: '1', name: 'Test Project', owner: 'John', deadline: '2025-12-01', status: Status.Active }
     ];
 
     const req = httpMock.expectOne('assets/projects.json');
@@ -37,6 +46,9 @@ describe('ProjectStoreService', () => {
   });
 
   it('should toggle favorites', () => {
+    const req = httpMock.expectOne('assets/projects.json');
+    req.flush([]);
+    
     service.toggleFavorite('1');
     expect(service.favoriteIds().has('1')).toBe(true);
 
@@ -45,9 +57,12 @@ describe('ProjectStoreService', () => {
   });
 
   it('should filter projects by query', () => {
+    const req = httpMock.expectOne('assets/projects.json');
+    req.flush([]);
+    
     service.projects.set([
-      { id: '1', name: 'Angular Project', owner: 'John', deadline: '2025-12-01', status: 'active' },
-      { id: '2', name: 'React Project', owner: 'Jane', deadline: '2025-12-01', status: 'paused' }
+      { id: '1', name: 'Angular Project', owner: 'John', deadline: '2025-12-01', status: Status.Active },
+      { id: '2', name: 'React Project', owner: 'Jane', deadline: '2025-12-01', status: Status.Paused }
     ]);
 
     service.search('Angular');
